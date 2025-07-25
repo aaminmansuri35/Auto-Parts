@@ -38,24 +38,23 @@ export default function AdminLayout() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const navigation = [
-    // { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    {
-      name: "Home",
-      icon: Package,
-      type: "dropdown",
-      children: [
-        { name: "Slider", href: "admin/home" },
-        { name: "About", href: "home/about" },
-        { name: "Footer", href: "footerAdmin" },
-       
-      ]
-    },
-    { name: "Products", href: "home/products", icon: Package },
-    { name: "category", href: "category", icon: Package },
-    { name: "Services", href: "home/services", icon: Settings },
- 
-  ]
+const navigation = [
+  {
+    name: "Home",
+    icon: Package,
+    type: "dropdown",
+    children: [
+      { name: "Slider", href: "admin/home" },
+      { name: "About", href: "home/about" },
+      { name: "Footer", href: "footerAdmin" },
+    ]
+  },
+  { name: "Products", href: "home/products", icon: Package },
+  { name: "category", href: "category", icon: Package },
+  { name: "Services", href: "home/services", icon: Settings },
+  { name: "Notification", href: "notification", icon: MessageSquare }, // ✅ NEW
+]
+
 
   const toggleSidebar = () => {
     if (isDesktop) {
@@ -101,7 +100,8 @@ export default function AdminLayout() {
                 <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-lg">AP</span>
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">Admin Panel</span>
+                <span className="ml-2 text-xl font-bold text-gray-900">
+Metro Traders</span>
               </div>
             )}
             <button
@@ -205,7 +205,7 @@ export default function AdminLayout() {
               className={`flex items-center w-full ${collapsed ? "justify-center" : ""} px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200 group`}
               onClick={()=>{
                 localStorage.clear();
-                navigate("/login")
+                navigate("/")
               }}
             >
               <LogOut

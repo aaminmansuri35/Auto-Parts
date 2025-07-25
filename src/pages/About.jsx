@@ -3,6 +3,7 @@
 import { Users, Award, Clock, Shield } from "lucide-react"
 import { useState, useEffect } from "react"
 import React from "react"
+import { motion } from "framer-motion";
 
 export default function About() {
   const [aboutData, setAboutData] = useState(null)
@@ -30,24 +31,24 @@ export default function About() {
           setAboutData(about)
 
           // Dynamically build stats array from API values
-          setStatsData([
-            {
-              icon: Users,
-              label: "Happy Customers",
-              value: about.customer ? `${about.customer.toLocaleString()}+` : "10,000+",
-            },
-            {
-              icon: Award,
-              label: "Years Experience",
-              value: about.experience ? `${about.experience}+` : "20+",
-            },
-            {
-              icon: Clock,
-              label: "Projects Completed",
-              value: about.projects ? `${about.projects.toLocaleString()}+` : "50,000+",
-            },
-          
-          ])
+          // setStatsData([
+          //   {
+          //     icon: Users,
+          //     label: "Happy Customers",
+          //     value: about.customer ? `${about.customer.toLocaleString()}+` : "10,000+",
+          //   },
+          //   {
+          //     icon: Award,
+          //     label: "Years Experience",
+          //     value: about.experience ? `${about.experience}+` : "20+",
+          //   },
+          //   {
+          //     icon: Clock,
+          //     label: "Projects Completed",
+          //     value: about.projects ? `${about.projects.toLocaleString()}+` : "50,000+",
+          //   },
+
+          // ])
         }
       })
       .catch((err) => console.error("About API Error:", err))
@@ -88,26 +89,26 @@ export default function About() {
       </section>
 
       {/* ✅ Stats Section - From API, CSS Unchanged */}
-    <section className="py-12 md:py-16 bg-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-      {statsData.map((stat, index) => (
-        <div
-          key={index}
-          className="bg-blue-50 p-4 rounded-lg shadow-sm flex flex-col items-center text-center"
-        >
-          <div className="bg-blue-100 w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3">
-            <stat.icon className="h-5 w-5 md:h-8 md:w-8 text-blue-600" />
+      {/* <section className="py-12 md:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {statsData.map((stat, index) => (
+              <div
+                key={index}
+                className="bg-blue-50 p-4 rounded-lg shadow-sm flex flex-col items-center text-center"
+              >
+                <div className="bg-blue-100 w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <stat.icon className="h-5 w-5 md:h-8 md:w-8 text-blue-600" />
+                </div>
+                <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-sm md:text-base text-gray-600">{stat.label}</div>
+              </div>
+            ))}
           </div>
-          <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
-            {stat.value}
-          </div>
-          <div className="text-sm md:text-base text-gray-600">{stat.label}</div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section> */}
 
 
       {/* About Section */}
@@ -129,12 +130,12 @@ export default function About() {
                     />
                   )}
                 </div>
-                {aboutData && (
+                {/* {aboutData && (
                   <div className="absolute -bottom-6 z-10 -right-6 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 px-6 rounded-xl shadow-lg transform rotate-3">
                     <div className="text-3xl font-bold">{aboutData.experience}+</div>
                     <div className="text-sm font-medium">Years Experience</div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
 
@@ -155,8 +156,8 @@ export default function About() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-white  p-5 rounded-xl shadow-md border border-gray-100 ">
+                <div className="grid grid-cols-1 sm:grid-cols-1 gap-6 mb-8">
+                  {/* <div className="bg-white  p-5 rounded-xl shadow-md border border-gray-100 ">
                     <div className="flex items-center">
                       <div className="mr-4 bg-blue-100 p-3 rounded-lg">
                         <svg
@@ -181,7 +182,7 @@ export default function About() {
                         <div className="text-gray-600">Happy Customers</div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
                     <div className="flex items-center">
@@ -228,27 +229,34 @@ export default function About() {
             {/* Vertical line - mobile left aligned, desktop centered */}
             <div className="absolute left-4 md:left-1/2 top-0 h-full w-0.5 bg-blue-200 md:transform md:-translate-x-1/2"></div>
 
-            {timeline.map((item, index) => (
-              <div key={index} className="relative mb-10 md:mb-12 group">
-                <div className="absolute left-0 md:left-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full border-4 border-white shadow-xl transform -translate-x-1/2 md:-translate-x-1/2 group-hover:scale-125 transition-transform duration-300"></div>
+        {timeline.map((item, index) => (
+  <motion.div
+    key={index}
+    className="relative mb-10 md:mb-12 group"
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
+  >
+    <div className="absolute left-0 md:left-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full border-4 border-white shadow-xl transform -translate-x-1/2 md:-translate-x-1/2 group-hover:scale-125 transition-transform duration-300"></div>
 
-                <div className="md:flex md:items-center">
-                  <div className={`md:w-1/2 ${index % 2 === 0 ? "md:pr-8 md:text-right" : "md:pl-8 md:order-last"}`}>
-                    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group-hover:border-blue-200">
-                      <div className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-sm px-3 py-1 rounded-full mb-3">
-                        {item.year}
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed">{item.description}</p>
-                    </div>
-                  </div>
+    <div className="md:flex md:items-center">
+      <div className={`md:w-1/2 ${index % 2 === 0 ? "md:pr-8 md:text-right" : "md:pl-8 md:order-last"}`}>
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group-hover:border-blue-200">
+          <div className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-sm px-3 py-1 rounded-full mb-3">
+            {item.year}
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+            {item.title}
+          </h3>
+          <p className="text-gray-600 leading-relaxed">{item.description}</p>
+        </div>
+      </div>
+      <div className={`hidden md:block md:w-1/2 ${index % 2 === 0 ? "" : "order-first"}`}></div>
+    </div>
+  </motion.div>
+))}
 
-                  <div className={`hidden md:block md:w-1/2 ${index % 2 === 0 ? "" : "order-first"}`}></div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

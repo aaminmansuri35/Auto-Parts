@@ -116,7 +116,7 @@ function AboutSection() {
     }
 
     const resetForm = () => {
-        setForm({ title: "", description: "", experience: "", customer: "", parts: "", image: null })
+        setForm({ title: "", description: "", customer: "", parts: "", image: null })
         setPreviewImage(null)
         setEditingId(null)
         setShowModal(false)
@@ -151,8 +151,8 @@ function AboutSection() {
                                     <th className="px-6 py-3 text-xs text-gray-500 uppercase">Image</th>
                                     <th className="px-6 py-3 text-xs text-gray-500 uppercase">Title</th>
                                     <th className="px-6 py-3 text-xs text-gray-500 uppercase">Description</th>
-                                    <th className="px-6 py-3 text-xs text-gray-500 uppercase">Experience</th>
-                                    <th className="px-6 py-3 text-xs text-gray-500 uppercase">Customer</th>
+                                    {/* <th className="px-6 py-3 text-xs text-gray-500 uppercase">Experience</th> */}
+                                    {/* <th className="px-6 py-3 text-xs text-gray-500 uppercase">Customer</th> */}
                                     <th className="px-6 py-3 text-xs text-gray-500 uppercase">Parts</th>
                                     <th className="px-6 py-3 text-xs text-gray-500 uppercase">Actions</th>
                                 </tr>
@@ -174,8 +174,8 @@ function AboutSection() {
                                                 : item.description}
                                         </td>
 
-                                        <td className="px-6 py-4">{item.experience}</td>
-                                        <td className="px-6 py-4">{item.customer}</td>
+                                        {/* <td className="px-6 py-4">{item.experience}</td> */}
+                                        {/* <td className="px-6 py-4">{item.customer}</td> */}
                                         <td className="px-6 py-4">{item.parts}</td>
                                         <td className="px-6 py-4 ">
                                             <button onClick={() => handleEdit(item)} className="text-blue-600 hover:bg-blue-100 p-1 rounded">
@@ -308,7 +308,7 @@ function JourneySection() {
     const fetchData = async () => {
         setIsLoading(true)
         try {
-            const res = await axios.get("http://192.168.1.20:8000/api/journey/list")
+            const res = await axios.get("https://snmtc.in/parts/api/journey/list")
             setJourneyData(res.data.data)
         } catch (error) {
             console.error("Error fetching journey data:", error)

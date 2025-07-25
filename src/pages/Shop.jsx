@@ -23,7 +23,6 @@ const ProductCard = ({ product, onView, onInquiry }) => {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={handleImageError}
         />
-       
       </div>
       <div className="p-4">
         <h3 className="font-semibold text-lg mb-1 group-hover:text-indigo-600 transition-colors">
@@ -71,26 +70,33 @@ export default function Shop() {
   const fetchProducts = async (page = 1) => {
     setLoading(true)
     try {
-      let url, isPaginated = true
-      
-      if (categoryId) {
-        url = `https://snmtc.in/parts/api/product/filterbycategory?category_id=${categoryId}`
-        isPaginated = false
-      } else if (searchTerm.trim() !== "") {
-        url = `https://snmtc.in/parts/api/product/search?title=${searchTerm}`
-        isPaginated = false
-      } else {
-        url = `https://snmtc.in/parts/api/product/list?page=${page}&per_page=${pagination.perPage}`
-        isPaginated = true
+      let url
+      let isPaginated = true
+
+      // Case 1: Both searchTerm + categoryId
+      if (categoryId && searchTerm.trim() !== "") {
+        url = `https://snmtc.in/parts/api/product/productserachlist?search=${searchTerm}&category_id=${categoryId}&page=${page}&per_page=${pagination.perPage}`
       }
-      
+      // Case 2: Only categoryId
+      else if (categoryId) {
+        url = `https://snmtc.in/parts/api/product/productserachlist?category_id=${categoryId}&page=${page}&per_page=${pagination.perPage}`
+      }
+      // Case 3: Only searchTerm
+      else if (searchTerm.trim() !== "") {
+        url = `https://snmtc.in/parts/api/product/productserachlist?search=${searchTerm}&page=${page}&per_page=${pagination.perPage}`
+      }
+      // Case 4: All Products
+      else {
+        url = `https://snmtc.in/parts/api/product/list?page=${page}&per_page=${pagination.perPage}`
+      }
+
       const response = await fetch(url)
       if (!response.ok) throw new Error("Failed to fetch products")
       const data = await response.json()
-      
+
       if (data.statusCode === 200 || data.status === true) {
         const productsData = data.data || []
-        
+
         setProducts(productsData.map(item => ({
           id: item.id,
           name: item.productname || item.name,
@@ -100,30 +106,21 @@ export default function Shop() {
           inStock: Math.random() > 0.2,
           description: item.description || "High quality product with premium features"
         })))
-        
-        if (isPaginated) {
-          setPagination({
-            currentPage: page,
-            totalPages: Math.ceil(data.total / pagination.perPage),
-            perPage: pagination.perPage,
-            totalItems: data.total
-          })
-        } else {
-          setPagination({
-            currentPage: 1,
-            totalPages: 1,
-            perPage: productsData.length,
-            totalItems: productsData.length
-          })
-        }
-        
-        // Fetch category name if categoryId exists
-        if (categoryId && productsData.length > 0) {
-          const categoryResponse = await fetch(`https://snmtc.in/parts/api/category/list`)
-          if (categoryResponse.ok) {
-            const categoryData = await categoryResponse.json()
-            if (categoryData.statusCode === 200) {
-              const category = categoryData.data.find(c => c.id == categoryId)
+
+        setPagination({
+          currentPage: data.current_page || page,
+          totalPages: data.total_pages || Math.ceil((data.total || productsData.length) / pagination.perPage) || 1,
+          perPage: data.per_page || pagination.perPage,
+          totalItems: data.total || productsData.length
+        })
+
+        // Set current category name if applicable
+        if (categoryId) {
+          const catRes = await fetch(`https://snmtc.in/parts/api/category/list`)
+          if (catRes.ok) {
+            const catData = await catRes.json()
+            if (catData.statusCode === 200) {
+              const category = catData.data.find(c => c.id == categoryId)
               setCurrentCategory(category?.category || null)
             }
           }
@@ -144,10 +141,8 @@ export default function Shop() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (searchTerm.trim() !== "") {
-        fetchProducts()
-      } else if (!categoryId) {
-        fetchProducts()
+      if (searchTerm.trim() !== "" || !categoryId) {
+        fetchProducts(1)
       }
     }, 500)
     return () => clearTimeout(timer)
@@ -191,7 +186,7 @@ export default function Shop() {
           <h3 className="text-xl font-semibold text-gray-800 mb-2">Error Loading Products</h3>
           <p className="text-gray-600 mb-4">{error}</p>
           <button
-            onClick={fetchProducts}
+            onClick={() => fetchProducts(pagination.currentPage)}
             className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
           >
             Try Again
@@ -203,7 +198,6 @@ export default function Shop() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hero Section */}
       <section className="pt-32 pb-20 bg-gradient-to-r from-indigo-600 to-purple-800">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -232,24 +226,66 @@ export default function Shop() {
         </div>
       </section>
 
-      {/* Products Section */}
       <section className="flex-grow py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Toolbar */}
-     
-
-          {/* Products Grid */}
           {products.length > 0 ? (
-            <div className={`grid ${viewMode === "grid" ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'} gap-6`}>
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onView={setSelectedProduct}
-                  onInquiry={handleInquiryClick}
-                />
-              ))}
-            </div>
+            <>
+              <div className={`grid ${viewMode === "grid" ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'} gap-6`}>
+                {products.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onView={setSelectedProduct}
+                    onInquiry={handleInquiryClick}
+                  />
+                ))}
+              </div>
+
+              {pagination.totalPages > 1 && (
+                <div className="flex justify-center mt-8">
+                  <nav className="flex items-center gap-2">
+                    <button
+                      onClick={() => fetchProducts(pagination.currentPage - 1)}
+                      disabled={pagination.currentPage === 1}
+                      className="p-2 rounded-full disabled:opacity-50 hover:bg-gray-100"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+
+                    {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
+                      let pageNum
+                      if (pagination.totalPages <= 5) {
+                        pageNum = i + 1
+                      } else if (pagination.currentPage <= 3) {
+                        pageNum = i + 1
+                      } else if (pagination.currentPage >= pagination.totalPages - 2) {
+                        pageNum = pagination.totalPages - 4 + i
+                      } else {
+                        pageNum = pagination.currentPage - 2 + i
+                      }
+
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => fetchProducts(pageNum)}
+                          className={`w-10 h-10 rounded-full ${pagination.currentPage === pageNum ? 'bg-indigo-600 text-white' : 'hover:bg-gray-100'}`}
+                        >
+                          {pageNum}
+                        </button>
+                      )
+                    })}
+
+                    <button
+                      onClick={() => fetchProducts(pagination.currentPage + 1)}
+                      disabled={pagination.currentPage === pagination.totalPages}
+                      className="p-2 rounded-full disabled:opacity-50 hover:bg-gray-100"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
+                  </nav>
+                </div>
+              )}
+            </>
           ) : (
             <div className="bg-white rounded-xl shadow-md p-8 text-center">
               <p className="text-gray-500">
@@ -266,46 +302,9 @@ export default function Shop() {
               )}
             </div>
           )}
-
-          {/* Pagination - Only show for non-filtered views */}
-          {pagination.totalPages > 1 && !categoryId && searchTerm.trim() === "" && (
-            <div className="flex justify-center mt-8">
-              <nav className="flex items-center gap-2">
-                <button
-                  onClick={() => fetchProducts(pagination.currentPage - 1)}
-                  disabled={pagination.currentPage === 1}
-                  className="p-2 rounded-full disabled:opacity-50 hover:bg-gray-100"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-
-                {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
-                  const page = i + 1
-                  return (
-                    <button
-                      key={page}
-                      onClick={() => fetchProducts(page)}
-                      className={`w-10 h-10 rounded-full ${pagination.currentPage === page ? 'bg-indigo-600 text-white' : 'hover:bg-gray-100'}`}
-                    >
-                      {page}
-                    </button>
-                  )
-                })}
-
-                <button
-                  onClick={() => fetchProducts(pagination.currentPage + 1)}
-                  disabled={pagination.currentPage === pagination.totalPages}
-                  className="p-2 rounded-full disabled:opacity-50 hover:bg-gray-100"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              </nav>
-            </div>
-          )}
         </div>
       </section>
 
-      {/* Product Detail Modal */}
       {selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
           <div className="relative bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -329,7 +328,6 @@ export default function Shop() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold mb-2">{selectedProduct.name}</h2>
-              
                 <p className="mb-6">{selectedProduct.description}</p>
                 <button
                   onClick={() => {

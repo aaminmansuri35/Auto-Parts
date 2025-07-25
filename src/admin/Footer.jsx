@@ -120,29 +120,29 @@ export default function FooterAdmin() {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-xs text-gray-500 uppercase">Description</th>
-                                    <th className="px-6 py-3 text-xs text-gray-500 uppercase">Address</th>
-                                    <th className="px-6 py-3 text-xs text-gray-500 uppercase">Phone</th>
-                                    <th className="px-6 py-3 text-xs text-gray-500 uppercase">Email</th>
-                                    <th className="px-6 py-3 text-xs text-gray-500 uppercase">Actions</th>
+                                    <th className="px-5 py-3 text-xs text-gray-500 uppercase">Description</th>
+                                    <th className="px-5 py-3 text-xs text-gray-500 uppercase">Address</th>
+                                    <th className="px-5 py-3 text-xs text-gray-500 uppercase">Phone</th>
+                                    <th className="px-5 py-3 text-xs text-gray-500 uppercase">Email</th>
+                                    <th className="px-5 py-3 text-xs text-gray-500 uppercase">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {footerData.map((item) => (
                                     <tr key={item.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 max-w-md truncate">
+                                        <td className="px-5 py-4 max-w-md truncate">
                                             {item.companydescription.length > 30
                                                 ? `${item.companydescription.substring(0, 30)}...`
                                                 : item.companydescription}
                                         </td>
-                                        <td className="px-6 py-4 max-w-md truncate">
+                                        <td className="px-5 py-4 max-w-md truncate">
                                             {item.address.length > 30
                                                 ? `${item.address.substring(0, 30)}...`
                                                 : item.address}
                                         </td>
-                                        <td className="px-6 py-4">{item.phone}</td>
-                                        <td className="px-6 py-4 max-w-md truncate">{item.email}</td>
-                                        <td className="px-6 py-4 ">
+                                        <td className="px-5 py-4">{item.phone}</td>
+                                        <td className="px-5 py-4 max-w-md truncate">{item.email}</td>
+                                        <td className="px-5 py-4 ">
                                             <button onClick={() => handleEdit(item)} className="text-blue-600 hover:bg-blue-100 p-1 rounded">
                                                 <Edit className="w-4 h-4" />
                                             </button>

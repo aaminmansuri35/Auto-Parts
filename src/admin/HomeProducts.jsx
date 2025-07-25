@@ -151,7 +151,7 @@ export default function AdminProducts() {
                 setSuccessMessage(editingId ? "Product updated successfully!" : "Product added successfully!")
                 await fetchProducts(searchTerm, pagination.currentPage)
                 resetForm()
-                
+
                 // Clear success message after 3 seconds
                 setTimeout(() => {
                     setSuccessMessage("")
@@ -333,7 +333,7 @@ export default function AdminProducts() {
                                                     src={`https://snmtc.in/parts/public/${product.image}`}
                                                     alt={product.productname}
                                                     className="h-16 w-16 rounded-lg object-cover border border-gray-200"
-                                                
+
                                                 />
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -380,9 +380,9 @@ export default function AdminProducts() {
                                 </div>
                             )}
                         </div>
-
+                      
                         {/* Pagination Controls */}
-                        {pagination.totalPages > 1 && (
+                        {/* {pagination.totalPages > 1 && (
                             <div className="flex flex-col md:flex-row items-center justify-between px-6 py-4 border-t border-gray-200">
                                 <div className="mb-4 md:mb-0">
                                     <p className="text-sm text-gray-700">
@@ -392,14 +392,7 @@ export default function AdminProducts() {
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                    <button
-                                        onClick={() => handlePageChange(1)}
-                                        disabled={pagination.currentPage === 1}
-                                        className="px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                                        title="First Page"
-                                    >
-                                        «
-                                    </button>
+                                 
                                     <button
                                         onClick={() => handlePageChange(pagination.currentPage - 1)}
                                         disabled={pagination.currentPage === 1}
@@ -427,21 +420,60 @@ export default function AdminProducts() {
                                     >
                                         ›
                                     </button>
-                                    <button
-                                        onClick={() => handlePageChange(pagination.totalPages)}
-                                        disabled={pagination.currentPage === pagination.totalPages}
-                                        className="px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                                        title="Last Page"
-                                    >
-                                        »
-                                    </button>
+                                  
                                 </div>
                             </div>
-                        )}
+                        )} */}
                     </>
                 )}
-            </div>
 
+
+                
+            </div>
+  {pagination.totalPages > 1 && (
+                            // <div className="flex flex-col md:flex-row items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
+
+
+                            <div className="flex justify-between items-center gap-1 mt-5">
+
+
+                                <button
+                                    onClick={() => handlePageChange(pagination.currentPage - 1)}
+                                    disabled={pagination.currentPage === 1}
+                                    className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                    title="Previous Page"
+                                >
+                                    <ChevronLeft className="h-4 w-4" />Previous
+                                </button>
+
+                                <div className="flex items-center space-x-1">
+                                    {getPageNumbers().map((page) => (
+                                        <button
+                                            key={page}
+                                            onClick={() => handlePageChange(page)}
+                                            className={`px-4 py-2 border rounded-md text-sm font-medium ${pagination.currentPage === page
+                                                    ? 'bg-indigo-600 text-white border-indigo-600'
+                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                }`}
+                                        >
+                                            {page}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <button
+                                    onClick={() => handlePageChange(pagination.currentPage + 1)}
+                                    disabled={pagination.currentPage === pagination.totalPages}
+                                    className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                    title="Next Page"
+                                >
+                                    <ChevronRight className="h-4 w-4" />Next
+                                </button>
+
+
+                            </div>
+                            // </div>
+                        )}
             {/* Add/Edit Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center p-4">

@@ -22,6 +22,7 @@ import Login from "./admin/Login";
 import Category from "./admin/Category";
 
 import React from "react";
+import Notification from "./admin/Notification";
 
 // ✅ Inline ProtectedRoute component
 function ProtectedRoute() {
@@ -59,7 +60,8 @@ export default function App() {
               <Route path="home/about" element={<HomeAbout />} />
               <Route path="home/services" element={<HomeServices />} />
               <Route path="home/products" element={<HomeProducts />} />
-             
+              <Route path="notification" element={<Notification />} />
+
               <Route path="footerAdmin" element={<FooterAdmin />} />
             </Route>
           </Route>
@@ -71,8 +73,8 @@ export default function App() {
             <Route path="/services" element={<Services />} />
             <Route path="/serviceDetail/:id" element={<ServiceDetail />} />
 
-<Route path="/shop" element={<Shop />} />
-<Route path="/shop/:categoryId" element={<Shop />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/shop/:categoryId" element={<Shop />} />
             <Route path="/inquiry/:id" element={<Inquiry />} />
           </Route>
         </Routes>

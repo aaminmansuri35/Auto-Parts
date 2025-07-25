@@ -23,6 +23,17 @@ import {
   ChevronDown
 } from "lucide-react"
 
+import { motion } from "framer-motion"
+
+
+
+
+const slideVariants = {
+  initial: { opacity: 0, scale: 1 },
+  animate: { opacity: 1, scale: 1.05, transition: { duration: 1.2 } },
+  exit: { opacity: 0, scale: 1 },
+}
+
 export default function Home() {
   const navigate = useNavigate();
   const [viewingProduct, setViewingProduct] = useState(false);
@@ -129,189 +140,169 @@ export default function Home() {
 
   return (
     <div className="font-['Roboto']">
-      {/* ================= Hero Slider ================= */}
-<section className="relative overflow-hidden text-white h-[50vh] md:h-screen">
 
-  {isLoading.slides ? (
-    <div className="h-full w-full flex items-center justify-center">
-      <div className="animate-pulse text-gray-500">Loading slides...</div>
-    </div>
-  ) : (
-    <>
-      <div
-        className="flex transition-transform duration-1000 ease-in-out will-change-transform h-full"
-        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-      >
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className="w-full flex-shrink-0 relative overflow-hidden "
-          >
-            {/* Background Image */}
-            <img
-              src={slide.image}
-              alt={slide.title}
-              loading="lazy"
-              className={`absolute inset-0 w-full h-[50vh] md:h-screen object-cover transition-transform duration-[2000ms] ease-in-out ${
-                index === currentSlide ? "scale-110" : "scale-100"
-              }`}
-            />
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/40 z-10" />
-            {/* Text Content */}
-            <div
-              className={`absolute inset-0 z-20 flex items-center px-4 max-w-7xl mx-auto ${
-                index === 0
-                  ? "justify-start text-left"
-                  : index === 1
-                  ? "justify-center text-center"
-                  : "justify-end text-right"
-              }`}
-            >
-              <div className="max-w-xl">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                  {slide.title}
-                </h1>
-                <p className="text-xl md:text-2xl text-white/90">
-                  {slide.subtitle}
-                </p>
-              </div>
-            </div>
+
+
+      <section className="relative overflow-hidden text-white h-[50vh] md:h-screen">
+        {isLoading.slides ? (
+          <div className="h-full w-full flex items-center justify-center">
+            <div className="animate-pulse text-gray-500">Loading slides...</div>
           </div>
-        ))}
-      </div>
+        ) : (
+          <motion.div
+            className="relative h-full flex items-center justify-center"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+          >
+            {slides.map((slide, index) => (
+              <motion.div
+                key={index}
+                variants={slideVariants}
+                initial="initial"
+                animate={index === currentSlide ? "animate" : "initial"}
+                exit="exit"
+                className="absolute inset-0 w-full h-full transition-transform duration-1000 ease-in-out"
+              >
+                {/* Background Image */}
+                <motion.img
+                  src={slide.image}
+                  alt={slide.title}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  animate={{ scale: index === currentSlide ? 1.1 : 1 }}
+                  transition={{ duration: 2 }}
+                />
 
-      {/* Slider Controls */}
-      {/* <button
-        onClick={() =>
-          setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
-        }
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 bg-white/30 hover:bg-white/50 rounded-full backdrop-blur-sm"
-      >
-        <ChevronLeft className="h-6 w-6 text-white" />
-      </button>
-      <button
-        onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 bg-white/30 hover:bg-white/50 rounded-full backdrop-blur-sm"
-      >
-        <ChevronRight className="h-6 w-6 text-white" />
-      </button> */}
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/40 z-10" />
 
-      {/* Dots */}
-      {slides.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentSlide(idx)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                idx === currentSlide ? "bg-white" : "bg-white/40"
-              }`}
-            />
-          ))}
-        </div>
-      )}
-    </>
-  )}
-</section>
+                {/* Text Content */}
+                <div
+                  className={`absolute inset-0 z-20 flex items-center px-4 max-w-7xl mx-auto ${index === 0
+                    ? "justify-start text-left"
+                    : index === 1
+                      ? "justify-center text-center"
+                      : "justify-end text-right"
+                    }`}
+                >
+                  <div className="max-w-xl">
+                    <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                      {slide.title}
+                    </h1>
+                    <p className="text-xl md:text-2xl text-white/90">
+                      {slide.subtitle}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </section>
+
+
 
 
       {/* ================= About Section ================= */}
-   <section className="py-16 sm:py-20 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
-  {/* Blobs */}
-  <div className="absolute top-20 left-0 w-52 h-52 sm:w-72 sm:h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-  <div className="absolute top-0 right-10 sm:right-20 w-72 h-72 sm:w-96 sm:h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+      <section className="py-16 sm:py-20 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
+        {/* Blobs */}
+        <div className="absolute top-20 left-0 w-52 h-52 sm:w-72 sm:h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-0 right-10 sm:right-20 w-72 h-72 sm:w-96 sm:h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
 
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    {isLoading.about ? (
-      <div className="h-96 flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Loading about section...</div>
-      </div>
-    ) : (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-        {/* Image Section */}
-        <div className="order-2 lg:order-1">
-          <div className="relative">
-            <div className="absolute -inset-6 bg-gradient-to-r from-blue-500 to-blue-700 rounded-2xl transform rotate-3 z-0"></div>
-            <div className="relative rounded-2xl overflow-hidden transform -rotate-1 z-10">
-              {aboutData && (
-                <img
-                  src={`https://snmtc.in/parts/public/${aboutData.filename}`}
-                  alt="About Us"
-                  loading="lazy"
-                  className="w-full object-cover h-[300px] md:h-[400px] transition-transform duration-1000 hover:scale-105"
-                />
-              )}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {isLoading.about ? (
+            <div className="h-96 flex items-center justify-center">
+              <div className="animate-pulse text-gray-500">Loading about section...</div>
             </div>
-            {aboutData && (
-              <div className="absolute -bottom-6 z-10 -right-6 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 px-6 rounded-xl shadow-lg transform rotate-3">
-                <div className="text-2xl sm:text-3xl font-bold">{aboutData.experience}+</div>
-                <div className="text-sm font-medium">Years Experience</div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Text Section */}
-        <div className="order-1 lg:order-2">
-          <div className="max-w-lg mx-auto lg:mx-0">
-            <span className="inline-block mb-4 px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-xs sm:text-sm font-semibold text-center lg:text-left">
-              About Company
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center lg:text-left">
-              {aboutData?.title || "Quality Auto Parts & Professional Service"}
-            </h2>
-
-            <div className="prose prose-sm sm:prose-lg text-gray-600 mb-8">
-              {aboutData?.description.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="mb-4">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            {/* Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-              {/* Customers */}
-              <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center">
-                  <div className="mr-4 bg-blue-100 p-3 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              {/* Image Section */}
+              <div className="order-2 lg:order-1">
+                <div className="relative">
+                  <div className="absolute -inset-6 bg-gradient-to-r from-blue-500 to-blue-700 rounded-2xl transform rotate-3 z-0"></div>
+                  <div className="relative rounded-2xl overflow-hidden transform -rotate-1 z-10">
+                    {aboutData && (
+                      <img
+                        src={`https://snmtc.in/parts/public/${aboutData.filename}`}
+                        alt="About Us"
+                        loading="lazy"
+                        className="w-full object-cover h-[300px] md:h-[400px] transition-transform duration-1000 hover:scale-105"
+                      />
+                    )}
                   </div>
-                  <div>
-                    <div className="text-xl sm:text-2xl font-bold text-blue-600">
-                      {aboutData?.customer ? `${aboutData.customer.toLocaleString()}+` : "10,000+"}
+                  {/* {aboutData && (
+                    
+                    <div className="absolute -bottom-6 z-10 -right-6 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 px-6 rounded-xl shadow-lg transform rotate-3">
+                      <div className="text-2xl sm:text-3xl font-bold">{aboutData.experience}+</div>
+                      <div className="text-sm font-medium">Years Experience</div>
+                      
                     </div>
-                    <div className="text-gray-600 text-sm">Happy Customers</div>
-                  </div>
+                  )} */}
                 </div>
               </div>
 
-              {/* Parts */}
-              <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center">
-                  <div className="mr-4 bg-blue-100 p-3 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
+              {/* Text Section */}
+              <div className="order-1 lg:order-2">
+                <div className="max-w-lg mx-auto lg:mx-0">
+                  <span className="inline-block mb-4 px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-xs sm:text-sm font-semibold text-center lg:text-left">
+                    About Company
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center lg:text-left">
+                    {aboutData?.title || "Quality Auto Parts & Professional Service"}
+                  </h2>
+
+                  <div className="prose prose-sm sm:prose-lg text-gray-600 mb-8">
+                    {aboutData?.description.split('\n\n').map((paragraph, index) => (
+                      <p key={index} className="mb-4">
+                        {paragraph}
+                      </p>
+                    ))}
                   </div>
-                  <div>
-                    <div className="text-xl sm:text-2xl font-bold text-blue-600">
-                      {aboutData?.parts ? `${aboutData.parts.toLocaleString()}+` : "500+"}
+
+                  {/* Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-1 gap-6 mb-8">
+                    {/* Customers */}
+                    {/* <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                      <div className="flex items-center">
+                        <div className="mr-4 bg-blue-100 p-3 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="text-xl sm:text-2xl font-bold text-blue-600">
+                            {aboutData?.customer ? `${aboutData.customer.toLocaleString()}+` : "10,000+"}
+                          </div>
+                          <div className="text-gray-600 text-sm">Happy Customers</div>
+                        </div>
+                      </div>
+                    </div> */}
+
+                    {/* Parts */}
+                    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                      <div className="flex items-center">
+                        <div className="mr-4 bg-blue-100 p-3 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="text-xl sm:text-2xl font-bold text-blue-600">
+                            {aboutData?.parts ? `${aboutData.parts.toLocaleString()}+` : "500+"}
+                          </div>
+                          <div className="text-gray-600 text-sm">Parts Available</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-gray-600 text-sm">Parts Available</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
-      </div>
-    )}
-  </div>
-</section>
+      </section>
 
 
       {/* ================= Services Section ================= */}
@@ -370,7 +361,7 @@ export default function Home() {
                       {service.description}
                     </p>
 
-                    <button 
+                    <button
                       onClick={() => handleServiceClick(service.id)}
                       className="text-blue-600 font-medium inline-flex items-center group-hover:text-blue-800 transition-colors duration-300"
                     >

@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 import { Phone, Mail, MapPin, Send } from "lucide-react"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 export default function Inquiry() {
-  const { id } = useParams() // Get product ID from URL
+  const { id } = useParams()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -46,14 +48,15 @@ export default function Inquiry() {
       description: formData.message,
       user_name: formData.name,
       phone: formData.phone,
-      prod_id: id, // use the ID from URL
+       email: formData.email, // ✅ include email here
+      prod_id: id,
     }
 
     try {
       const res = await axios.post("https://snmtc.in/parts/api/inquiry/sendmail", payload)
 
-      if (res.status === 200 || res.data?.statusCode === 200) {
-        alert("Thank you! Your message was sent successfully.")
+      if (res.status === 200 || res.data?.statusCode === 200 || res.data?.statusCode === 201) {
+        toast.success(res.data?.message || "Inquiry sent successfully!")
         setFormData({
           name: "",
           email: "",
@@ -62,20 +65,18 @@ export default function Inquiry() {
           message: "",
         })
       } else {
-        alert("Something went wrong. Please try again.")
+        toast.error("Something went wrong. Please try again.")
       }
     } catch (err) {
       console.error("Error submitting inquiry:", err)
-      alert("There was an error sending your inquiry.")
+      // toast.error("There was an error sending your inquiry.")
     }
   }
 
   return (
     <div>
       {/* Hero Section */}
-  
-
-        <section className="relative py-12 md:py-20 bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600 overflow-hidden">
+      <section className="relative py-12 md:py-20 bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20 z-0 transform scale-110 transition-transform duration-[20s] ease-linear"
           style={{
@@ -83,7 +84,6 @@ export default function Inquiry() {
             animation: "parallax 20s ease-in-out infinite alternate",
           }}
         />
-        {/* Add floating particles */}
         <div className="absolute inset-0 z-5">
           {[...Array(6)].map((_, i) => (
             <div
@@ -99,7 +99,7 @@ export default function Inquiry() {
           ))}
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-          <h1 className="text-5xl font-bold text-white mb-6">Inquiry </h1>
+          <h1 className="text-5xl font-bold text-white mb-6">Inquiry</h1>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto">
             Get in touch with our team for any questions or service inquiries
           </p>
@@ -166,7 +166,7 @@ export default function Inquiry() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                   <input
@@ -178,23 +178,6 @@ export default function Inquiry() {
                     placeholder="(555) 123-4567"
                   />
                 </div>
-                {/* <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Subject *</label>
-                  <select
-                    name="subject"
-                    required
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg"
-                  >
-                    <option value="">Select a subject</option>
-                    <option value="Looking for Car Engine">Looking for Car Engine</option>
-                    <option value="Service Request">Service Request</option>
-                    <option value="Parts Inquiry">Parts Inquiry</option>
-                    <option value="Warranty Claim">Warranty Claim</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div> */}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Message *</label>
@@ -240,6 +223,9 @@ export default function Inquiry() {
           </div>
         </div>
       </section>
+
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   )
 }
