@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin } from "lucide-react"
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
-
+import logo from '../assets/img/img.png'; // adjust path if needed
 export default function Footer() {
   const [footer, setFooter] = useState(null)
   const [services, setServices] = useState([])
@@ -44,11 +44,13 @@ export default function Footer() {
           }`}>
             <div className="flex items-center mb-4">
               <div className="h-12 w-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">  <img
-                    src="src/components/img.png"
-                    alt="AutoParts Logo"
-                    className="h-10 w-auto object-contain"
-                  /></span>
+                <span className="text-white font-bold text-xl">  
+                    <img
+      src={logo}
+      alt="AutoParts Logo"
+      className="h-10 w-auto object-contain"
+    />
+                </span>
               </div>
               <span className="ml-3 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
                Metro Traders

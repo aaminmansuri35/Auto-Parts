@@ -7,20 +7,8 @@ import { motion } from "framer-motion";
 
 export default function About() {
   const [aboutData, setAboutData] = useState(null)
-  const [statsData, setStatsData] = useState([])
-  const [timeline, setTimeline] = useState([])
 
-  useEffect(() => {
-    fetch("https://snmtc.in/parts/api/journey/list")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.statusCode === 200 && Array.isArray(data.data)) {
-          setTimeline(data.data)
-        }
-      })
-      .catch((err) => console.error("Journey API Error:", err))
-  }, [])
-
+ 
   // Fetch about data from API
   useEffect(() => {
     fetch("https://snmtc.in/parts/api/about/list")
@@ -218,48 +206,7 @@ export default function About() {
       </section>
 
       {/* Timeline - Mobile Optimized */}
-      <section className="py-12 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10 md:mb-16">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">Our Journey</h2>
-            <p className="text-base md:text-lg text-gray-600">Key milestones in our company's growth</p>
-          </div>
-
-          <div className="relative pl-8 md:pl-0">
-            {/* Vertical line - mobile left aligned, desktop centered */}
-            <div className="absolute left-4 md:left-1/2 top-0 h-full w-0.5 bg-blue-200 md:transform md:-translate-x-1/2"></div>
-
-        {timeline.map((item, index) => (
-  <motion.div
-    key={index}
-    className="relative mb-10 md:mb-12 group"
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6, ease: "easeOut" }}
-  >
-    <div className="absolute left-0 md:left-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full border-4 border-white shadow-xl transform -translate-x-1/2 md:-translate-x-1/2 group-hover:scale-125 transition-transform duration-300"></div>
-
-    <div className="md:flex md:items-center">
-      <div className={`md:w-1/2 ${index % 2 === 0 ? "md:pr-8 md:text-right" : "md:pl-8 md:order-last"}`}>
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group-hover:border-blue-200">
-          <div className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-sm px-3 py-1 rounded-full mb-3">
-            {item.year}
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-            {item.title}
-          </h3>
-          <p className="text-gray-600 leading-relaxed">{item.description}</p>
-        </div>
-      </div>
-      <div className={`hidden md:block md:w-1/2 ${index % 2 === 0 ? "" : "order-first"}`}></div>
-    </div>
-  </motion.div>
-))}
-
-          </div>
-        </div>
-      </section>
+  
 
       {/* Mobile Footer CTA */}
       <section className="py-10 bg-blue-600 md:hidden">

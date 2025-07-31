@@ -28,7 +28,7 @@ function Login() {
         localStorage.setItem("isLoggedIn", "true");
         toast.success("Login successful!", { autoClose: 2000 });
         setTimeout(() => {
-   navigate("/admin/admin/home");
+   navigate("/admin");
 
         }, 2000);
       } else {

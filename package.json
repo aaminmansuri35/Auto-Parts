@@ -1,7 +1,7 @@
 {
   
   "name": "auto-parts",
-  
+  "homepage": "https://automechanic.snmtc.in",
   "private": true,
   
   "version": "0.0.0",
@@ -139,6 +139,9 @@
   
     
   "framer-motion": "^12.23.6",
+  
+    
+  "gsap": "^3.13.0",
   
     
   "input-otp": "1.4.1",

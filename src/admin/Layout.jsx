@@ -38,22 +38,22 @@ export default function AdminLayout() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-const navigation = [
-  {
-    name: "Home",
-    icon: Package,
-    type: "dropdown",
-    children: [
-      { name: "Slider", href: "admin/home" },
-      { name: "About", href: "home/about" },
-      { name: "Footer", href: "footerAdmin" },
-    ]
-  },
-  { name: "Products", href: "home/products", icon: Package },
-  { name: "category", href: "category", icon: Package },
-  { name: "Services", href: "home/services", icon: Settings },
-  { name: "Notification", href: "notification", icon: MessageSquare }, // ✅ NEW
-]
+  const navigation = [
+    {
+      name: "Home",
+      icon: Package,
+      type: "dropdown",
+      children: [
+        { name: "Slider", href: "admin" },
+        { name: "About", href: "home/about" },
+        { name: "Footer", href: "/admin/footer" },
+      ]
+    },
+    { name: "Products", href: "admin/products", icon: Package },
+    { name: "category", href: "/admin/category", icon: Package },
+    { name: "Services", href: "home/services", icon: Settings },
+    { name: "Notification", href: "admin/notification", icon: MessageSquare }, // ✅ NEW
+  ]
 
 
   const toggleSidebar = () => {
@@ -82,8 +82,8 @@ const navigation = [
               ? "w-20"
               : "w-64"
             : sidebarOpen
-            ? "translate-x-0 w-64"
-            : "-translate-x-full"
+              ? "translate-x-0 w-64"
+              : "-translate-x-full"
           }
           transition-all duration-300 ease-in-out
           lg:relative lg:translate-x-0`}
@@ -91,9 +91,8 @@ const navigation = [
         <div className="flex flex-col h-full">
           {/* Header */}
           <div
-            className={`flex items-center ${
-              collapsed ? "justify-center px-0" : "justify-between px-6"
-            } h-16 border-b border-gray-200`}
+            className={`flex items-center ${collapsed ? "justify-center px-0" : "justify-between px-6"
+              } h-16 border-b border-gray-200`}
           >
             {!collapsed && (
               <div className="flex items-center">
@@ -101,7 +100,7 @@ const navigation = [
                   <span className="text-white font-bold text-lg">AP</span>
                 </div>
                 <span className="ml-2 text-xl font-bold text-gray-900">
-Metro Traders</span>
+                  Metro Traders</span>
               </div>
             )}
             <button
@@ -128,13 +127,11 @@ Metro Traders</span>
                   <div key={item.name} className="mb-1">
                     <button
                       onClick={() => setHomeDropdownOpen(!homeDropdownOpen)}
-                      className={`flex items-center w-full ${
-                        collapsed ? "justify-center px-0 py-4" : "px-3 py-3"
-                      } text-sm font-medium rounded-lg transition-all duration-200 ${
-                        isAnyActive
+                      className={`flex items-center w-full ${collapsed ? "justify-center px-0 py-4" : "px-3 py-3"
+                        } text-sm font-medium rounded-lg transition-all duration-200 ${isAnyActive
                           ? "bg-blue-50 text-blue-600 font-semibold"
                           : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       <Icon className={`${collapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
                       {!collapsed && (
@@ -157,11 +154,10 @@ Metro Traders</span>
                             <Link
                               key={child.name}
                               to={child.href}
-                              className={`block text-sm px-2 py-1 rounded-md ${
-                                isChildActive
+                              className={`block text-sm px-2 py-1 rounded-md ${isChildActive
                                   ? "text-blue-600 bg-blue-100 font-medium"
                                   : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-                              }`}
+                                }`}
                               onClick={() => !isDesktop && setSidebarOpen(false)}
                             >
                               {child.name}
@@ -179,19 +175,16 @@ Metro Traders</span>
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`group flex items-center ${
-                    collapsed ? "justify-center px-0 py-4" : "px-3 py-3"
-                  } text-sm font-medium rounded-lg mb-1 transition-all duration-200 ${
-                    isActive
+                  className={`group flex items-center ${collapsed ? "justify-center px-0 py-4" : "px-3 py-3"
+                    } text-sm font-medium rounded-lg mb-1 transition-all duration-200 ${isActive
                       ? "bg-blue-50 text-blue-600 font-semibold"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                  }`}
+                    }`}
                   onClick={() => !isDesktop && setSidebarOpen(false)}
                 >
                   <Icon
-                    className={`${collapsed ? "mx-auto" : "mr-3"} h-5 w-5 ${
-                      isActive ? "text-blue-500" : "text-gray-400 group-hover:text-gray-600"
-                    }`}
+                    className={`${collapsed ? "mx-auto" : "mr-3"} h-5 w-5 ${isActive ? "text-blue-500" : "text-gray-400 group-hover:text-gray-600"
+                      }`}
                   />
                   {!collapsed && item.name}
                 </Link>
@@ -203,7 +196,7 @@ Metro Traders</span>
           <div className={`p-4 border-t border-gray-200 ${collapsed ? "text-center" : ""}`}>
             <button
               className={`flex items-center w-full ${collapsed ? "justify-center" : ""} px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200 group`}
-              onClick={()=>{
+              onClick={() => {
                 localStorage.clear();
                 navigate("/")
               }}

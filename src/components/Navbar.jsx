@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Menu, X, ShoppingCart, Wrench } from "lucide-react"
-
+import logo from '../assets/img/img.png';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [categories, setCategories] = useState([])
@@ -46,33 +46,32 @@ export default function Navbar() {
         href: `/shop/${category.id}`
       }))
     },
-    { name: "Services", href: "/services", icon: <Wrench className="h-4 w-4 inline mr-1" /> },
+    { name: "Services", href: "services", icon: <Wrench className="h-4 w-4 inline mr-1" /> },
   ]
 
   return (
     <>
-      <nav className={`fixed w-full top-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? "bg-white/90 backdrop-blur-md shadow-lg py-0" 
-          : "bg-white py-2"
-      }`}>
+      <nav className={`fixed w-full top-0 z-50 transition-all duration-500 ${scrolled
+        ? "bg-white/90 backdrop-blur-md shadow-lg py-0"
+        : "bg-white py-2"
+        }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="flex items-center space-x-2 group"
               >
                 <div className="bg-gradient-to-r from-red-600 to-red-800 p-1.5 rounded-lg group-hover:rotate-[15deg] transition-transform duration-300">
                   <img
-                    src="src/components/img.png"
+                    src={logo}
                     alt="AutoParts Logo"
                     className="h-10 w-auto object-contain"
                   />
                 </div>
                 <span className="text-2xl font-bold text-gray-900  sm:inline">
                   <span className="text-red-600">Metro</span>Traders
-                 {/* <img src="src/components/img.jpeg" alt="" style={{ width: "100%", height:"30px" }} /> */}
+                  {/* <img src="src/components/img.jpeg" alt="" style={{ width: "100%", height:"30px" }} /> */}
 
                 </span>
               </Link>
@@ -84,19 +83,18 @@ export default function Navbar() {
                 <div key={item.name} className="relative group py-2">
                   <Link
                     to={item.href}
-                    className={`px-4 py-2 text-sm font-medium flex items-center rounded-lg transition-all duration-300 ${
-                      location.pathname === item.href
-                        ? "text-white bg-gradient-to-r from-red-600 to-red-800 shadow-lg"
-                        : "text-gray-700 hover:text-red-600 hover:bg-red-50"
-                    }`}
+                    className={`px-4 py-2 text-sm font-medium flex items-center rounded-lg transition-all duration-300 ${location.pathname === item.href
+                      ? "text-white bg-gradient-to-r from-red-600 to-red-800 shadow-lg"
+                      : "text-gray-700 hover:text-red-600 hover:bg-red-50"
+                      }`}
                   >
                     {item.icon && item.icon}
                     {item.name}
                     {item.subItems && item.subItems.length > 0 && (
-                      <svg 
-                        className="w-4 h-4 ml-1 transition-transform duration-300 group-hover:rotate-180" 
-                        fill="none" 
-                        stroke="currentColor" 
+                      <svg
+                        className="w-4 h-4 ml-1 transition-transform duration-300 group-hover:rotate-180"
+                        fill="none"
+                        stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -106,7 +104,8 @@ export default function Navbar() {
 
                   {/* Dropdown */}
                   {item.subItems && item.subItems.length > 0 && (
-                    <div className="absolute left-0 mt-1 w-48 bg-white shadow-xl rounded-lg py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 origin-top">
+                    <div className="absolute left-0 mt-1 min-w-[12rem] max-h-[14rem] bg-white shadow-xl rounded-lg py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 origin-top overflow-y-auto space-y-1">
+
                       {item.subItems.map((subItem) => (
                         <Link
                           key={subItem.name}
@@ -150,19 +149,17 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
-        }`}>
+        <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+          }`}>
           <div className="bg-white border-t shadow-inner px-2 pt-2 pb-4 space-y-1">
             {navigation.map((item) => (
               <div key={item.name} className="border-b border-gray-100 last:border-0">
                 <Link
                   to={item.href}
-                  className={`flex items-center px-4 py-4 text-base font-medium rounded-lg transition-all duration-300 ${
-                    location.pathname === item.href
-                      ? "text-white bg-gradient-to-r from-red-600 to-red-800 shadow-lg"
-                      : "text-gray-700 hover:bg-red-50"
-                  }`}
+                  className={`flex items-center px-4 py-4 text-base font-medium rounded-lg transition-all duration-300 ${location.pathname === item.href
+                    ? "text-white bg-gradient-to-r from-red-600 to-red-800 shadow-lg"
+                    : "text-gray-700 hover:bg-red-50"
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.icon && item.icon}

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+#root {
+  background: url('/vite.svg');
+}
 
 @layer base {
   html {
