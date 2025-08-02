@@ -29,6 +29,7 @@ import Category from "./admin/Category";
 import Notification from "./admin/Notification";
 
 import React from "react";
+import ForgotPassword from "./admin/ForgotPassword";
 
 // ✅ Protected Route wrapper
 function ProtectedRoute() {
@@ -55,6 +56,7 @@ export default function App() {
 
           {/* ✅ Login (public) */}
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* ✅ Admin section (protected) */}
           <Route element={<ProtectedRoute />}>

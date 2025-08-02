@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ function Login() {
         localStorage.setItem("isLoggedIn", "true");
         toast.success("Login successful!", { autoClose: 2000 });
         setTimeout(() => {
-   navigate("/admin");
+          navigate("/admin");
 
         }, 2000);
       } else {
@@ -58,7 +59,7 @@ function Login() {
             >
               <svg className="mx-auto h-16 w-16 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                  d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
               </svg>
             </motion.div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Welcome back</h2>
@@ -105,19 +106,19 @@ function Login() {
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
+                      viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-.438.028-.87.083-1.294m17.75 7.87a10.02 10.02 0 002.417-3.685M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-.438.028-.87.083-1.294m17.75 7.87a10.02 10.02 0 002.417-3.685M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M4.121 4.121l15.758 15.758" />
+                        d="M4.121 4.121l15.758 15.758" />
                     </svg>
                   ) : (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
+                      viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M12 4.5c3.038 0 5.726 1.436 7.563 3.688A9.982 9.982 0 0121 12c0 2.214-.72 4.257-1.938 5.892C17.726 18.564 15.038 20 12 20s-5.726-1.436-7.563-3.688A9.982 9.982 0 013 12c0-2.214.72-4.257 1.938-5.892C6.274 5.436 8.962 4 12 4z" />
+                        d="M12 4.5c3.038 0 5.726 1.436 7.563 3.688A9.982 9.982 0 0121 12c0 2.214-.72 4.257-1.938 5.892C17.726 18.564 15.038 20 12 20s-5.726-1.436-7.563-3.688A9.982 9.982 0 013 12c0-2.214.72-4.257 1.938-5.892C6.274 5.436 8.962 4 12 4z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   )}
                 </div>
@@ -126,9 +127,16 @@ function Login() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center">
-                <input type="checkbox" className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"/>
+                <input type="checkbox" className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                 <span className="ml-2 text-sm text-gray-700">Remember me</span>
               </label>
+              <p className="mt-4 text-center text-sm">
+                <Link to="/forgot-password" className="text-blue-600 hover:underline">
+                  Forgot your password?
+                </Link>
+              </p>
+
+
             </div>
 
             <motion.button
@@ -141,10 +149,10 @@ function Login() {
               {isLoading ? (
                 <>
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-                       viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
                   Signing in...
                 </>
@@ -154,12 +162,7 @@ function Login() {
             </motion.button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <a href="/register" className="font-medium text-blue-600 hover:text-blue-500">
-              Sign up
-            </a>
-          </p>
+        
         </div>
         {/* Toast container */}
         <ToastContainer position="top-right" />
